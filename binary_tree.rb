@@ -1,30 +1,34 @@
+class BinaryTree
+  attr_accessor :contents
+
+  def initialize(arr)
+    @contents = build_tree(arr)
+  end
+
+  def build_tree(arr)
+    root = Node.new(arr.shift)
+    arr.each { |value| add_node(Node.new(value, parent = root), root) }
+  end
+
+  def add_node(node, parent)
+    if node.value <= parent.value
+      parent.lchild.nil? ? parent.lchild = node : add_node(node, parent.lchild)
+    else
+      parent.rchild.nil? ? parent.rchild = node : add_node(node, parent.rchild)
+    end
+  end
+end
+
 class Node
-	attr_accessor :value, :parent, :left_child, :right_child
+  attr_accessor :value, :parent, :lchild, :rchild
 
-	def initialize(value, parent = nil, left_child = nil, right_child = nil)
-		@value = value
-		@parent = parent
-		@left_child = left_child
-		@right_child = right_child
-	end
+  def initialize(value, parent = nil, lchild = nil, rchild = nil)
+    @value = value
+    @parent = parent
+    @lchild = lchild
+    @rchild = rchild
+  end
 end
 
-
-def build_tree(arr, parent = nil, tree = [])
-	return arr[0] if arr.size == 1
-
-	midpt_idx = arr.size / 2
-	midpt = arr[midpt_idx]
-
-	root = Node.new(midpt)
-
-	root.parent = parent
-	root.left_child = build_tree(arr[0...midpt_idx], root.value)
-	root.right_child = build_tree(arr[midpt_idx + 1..-1], root.value)
-
-	tree << root
-	tree
-end
-
-#p build_tree([1, 2, 3])
-p build_tree([0, 1, 2, 3, 4, 5, 6])
+tree = BinaryTree.new([1, 7, 4, 23, 8, 9, 4])
+p tree.contents
