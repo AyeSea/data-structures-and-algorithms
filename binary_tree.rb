@@ -54,11 +54,20 @@ def depth_first_search(value, tree)
   nil
 end
 
-def dfs_rec
-
+def dfs_rec(value, tree)
+  puts "Current node is #{tree.value}."
+  if value == tree.value
+    return value
+  elsif value < tree.value
+    tree.lchild.nil? ? nil : dfs_rec(value, tree.lchild)
+  elsif value > tree.value
+    tree.rchild.nil? ? nil : dfs_rec(value, tree.rchild)
+  end
 end
 
-tree = build_tree([1, 7, 4, 23, 8, 9, 4])
+tree = build_tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 p tree
-p breadth_first_search(4, tree)
-p depth_first_search(4, tree)
+p breadth_first_search(324, tree)
+p depth_first_search(324, tree)
+p dfs_rec(324, tree)
+
