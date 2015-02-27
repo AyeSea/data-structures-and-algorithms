@@ -32,14 +32,18 @@ class GameBoard
     return display_path(@visited, end_coord) if start_sqr.coord == end_sqr.coord
 
     loop do
-      break if start_sqr.coord == end_sqr.coord
-
       moves_from_sqr(start_coord).each do |move|
         @moves << move unless @moves.include?(move)
       end
 
-      next_sqr = Square.new(@moves.shift)
+      if @moves.include?(end_coord)
+        next_sqr = Square.new(end_coord)
+      else
+        next_sqr = Square.new(@moves.shuffle.shift)
+      end
+
       next_sqr.parent = start_sqr
+      @moves = []
       return knight_moves(next_sqr.coord, end_coord)
     end
 
@@ -75,8 +79,7 @@ class GameBoard
   def display_path(visited, end_coord)
     puts "You got to #{end_coord} in #{@visited.size - 1} moves!"
     puts "Here's a list of the squares you visited (in order):"
-    visited_in_order = @visited.reverse
-    visited_in_order.each { |sqr| p sqr.coord }
+    @visited.each { |sqr| p sqr.coord }
     reset
   end
 
@@ -90,4 +93,4 @@ end
 knights_tour = GameBoard.new([0, 0])
 knights_tour.knight_moves([0, 0], [0, 0])
 knights_tour.knight_moves([0, 0], [1, 2])
-knights_tour.knight_moves([0, 0], [3, 3])
+knights_tour.knight_moves([0, 0], [3, 3]) 
